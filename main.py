@@ -9,7 +9,7 @@ app = Flask(__name__)
 api = CoolQHttpAPI(COOLQ_PUAH_URL, access_token=ASSESS_TOKEN)
 
 sys.path.append('plugin')
-COMMAND_MAP = {}
+PLUGIN_CENTER = {}
 Initialization = False
 class PluginException(Exception):
     def __init__(self,err='插件错误'):
@@ -28,7 +28,7 @@ def Plugin_Load():
                 raise PluginException("初始化插件失败")
             if "name" not in plugins or "register_trigger" not in plugins or "register_type" not in plugins or "callback" not in plugins:
                 raise PluginException("初始化插件失败")
-            COMMAND_MAP[register] = plugins
+            PLUGIN_CENTER[register] = plugins
     Initialization = True
             
 @app.route("/"+TG_TOKEN, methods=["POST"])
@@ -40,7 +40,6 @@ def tg_event():
     if Initialization:
         data = update.message.to_dict()
         # 遍历插件加载消息
-
     return ""
 
 @app.route(COOLQ_RECVER_URL[COOLQ_RECVER_URL.rfind("/"):], methods=["POST"])
@@ -48,6 +47,20 @@ def qq_event():
     if Initialization:
         data = json.loads(request.data.decode("utf-8"))
         # 遍历插件加载消息
+        for i in PLUGIN_CENTER["register_trigger"]:
+            if PLUGIN_CENTER["register_trigger"] == "":
+                pass
+
+        COMMAND = data["message"].split(" ")[0]
+        if COMMAND in PLUGIN_CENTER:
+            if PLUGIN_CENTER[COMMAND]["register_type"] == "qq" or PLUGIN_CENTER[COMMAND]["register_type"] == "all" and PLUGIN_CENTER[COMMAND]["register_trigger"] != "":
+                if data["message_type"] == "group":
+                    if COMMAND["register_target"]["qq"]["group"] != "all" and data["group_id"] not in COMMAND["register_target"]["qq"]["group"]:
+                        continue
+                        PLUGIN_CENTER[COMMAND][callback]["qq"](qq_handle=api,tg_handle=bot,data=data["message"])
+                        
+                else:
+                    if data["group_id"] in COMMAND["register_target"]["qq"]["member"]:
     return ""
 
 @app.route("/control")
