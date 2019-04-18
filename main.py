@@ -10,6 +10,7 @@ api = CoolQHttpAPI(COOLQ_PUAH_URL, access_token=ASSESS_TOKEN)
 
 sys.path.append('plugin')
 COMMAND_MAP = {}
+Initialization = False
 class PluginException(Exception):
     def __init__(self,err='插件错误'):
         print("%s\n",err)
@@ -28,23 +29,33 @@ def Plugin_Load():
             if "name" not in plugins or "register_trigger" not in plugins or "register_type" not in plugins or "callback" not in plugins:
                 raise PluginException("初始化插件失败")
             COMMAND_MAP[register] = plugins
+    Initialization = True
             
-@app.route("/"+TG_API, methods=["POST"])
+@app.route("/"+TG_TOKEN, methods=["POST"])
 def tg_event():
+
     update = telegram.Update.de_json(request.get_json(force=True), bot)
     if update.message is None:
         return "Show me your TOKEN please!"
-    data = update.message.to_dict()
-    # 遍历插件加载消息
+    if Initialization:
+        data = update.message.to_dict()
+        # 遍历插件加载消息
 
     return ""
 
 @app.route(COOLQ_RECVER_URL[COOLQ_RECVER_URL.rfind("/"):], methods=["POST"])
 def qq_event():
-    data = json.loads(request.data.decode("utf-8"))
-    # 遍历插件加载消息
+    if Initialization:
+        data = json.loads(request.data.decode("utf-8"))
+        # 遍历插件加载消息
     return ""
 
 @app.route("/control")
 def control():
-    pass
+    bot = telegram.Bot(token=TG_TOKEN)
+    bot.set_webhook(TG_WEBHOOK)
+    Plugin_Load()
+
+if __name__ == "__main__":
+
+    app.run(host='0.0.0.0', port=8088)
