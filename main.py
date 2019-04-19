@@ -7,7 +7,7 @@ from * import config
 from flask import Flask, request
 app = Flask(__name__)
 api = CoolQHttpAPI(COOLQ_PUAH_URL, access_token=ASSESS_TOKEN)
-
+bot = telegram.Bot(token=TG_TOKEN)
 sys.path.append('plugin')
 PLUGIN_CENTER = {}
 Initialization = False
@@ -49,7 +49,7 @@ def qq_event():
         # 遍历插件加载消息
         for i in PLUGIN_CENTER["register_trigger"]:
             if PLUGIN_CENTER["register_trigger"] == "":
-                pass
+                PLUGIN_CENTER[COMMAND][callback]["qq"](qq_handle=api,tg_handle=bot,data=data)
 
         COMMAND = data["message"].split(" ")[0]
         if COMMAND in PLUGIN_CENTER:
@@ -57,17 +57,26 @@ def qq_event():
                 if data["message_type"] == "group":
                     if COMMAND["register_target"]["qq"]["group"] != "all" and data["group_id"] not in COMMAND["register_target"]["qq"]["group"]:
                         continue
-                        PLUGIN_CENTER[COMMAND][callback]["qq"](qq_handle=api,tg_handle=bot,data=data["message"])
+                    PLUGIN_CENTER[COMMAND][callback]["qq"](qq_handle=api,tg_handle=bot,data=data)
                         
                 else:
-                    if data["group_id"] in COMMAND["register_target"]["qq"]["member"]:
+                    # if data["qq_id"] in COMMAND["register_target"]["qq"]["member"]:
+                    # 我没看过成员字段是啥，先放着
+                    pass
     return ""
 
 @app.route("/control")
 def control():
-    bot = telegram.Bot(token=TG_TOKEN)
-    bot.set_webhook(TG_WEBHOOK)
-    Plugin_Load()
+    if request.args.get("status") == "start":
+        bot.set_webhook(TG_WEBHOOK)
+        Plugin_Load()
+        return ""
+    elif request.args.get("status") == "stop":
+        # 停止bot
+        return ""
+
+    # 返回状态
+    return ""
 
 if __name__ == "__main__":
 
