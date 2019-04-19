@@ -39,7 +39,16 @@ def tg_event():
         return "Show me your TOKEN please!"
     if Initialization:
         data = update.message.to_dict()
-        # 遍历插件加载消息
+        COMMAND = data["text"].split(" ")[0] 
+        if "text" in data and COMMAND in PLUGIN_CENTER:
+            if PLUGIN_CENTER["register_type"] == "tg" and PLUGIN_CENTER[COMMAND]["register_trigger"] != "":
+                if data["chat"]["type"] == "group":
+                    if ["chat"]["id"] in PLUGIN_CENTER[COMMAND]["register_target"]["tg"]["groups"] or PLUGIN_CENTER[COMMAND]["register_target"]["tg"]["groups"] == "all":
+                        PLUGIN_CENTER[COMMAND][callback]["qq"](qq_handle=api,tg_handle=bot,data=data)
+                else:
+                    #处理成员消息
+                    pass
+
     return ""
 
 @app.route(COOLQ_RECVER_URL[COOLQ_RECVER_URL.rfind("/"):], methods=["POST"])
@@ -53,11 +62,10 @@ def qq_event():
 
         COMMAND = data["message"].split(" ")[0]
         if COMMAND in PLUGIN_CENTER:
-            if PLUGIN_CENTER[COMMAND]["register_type"] == "qq" or PLUGIN_CENTER[COMMAND]["register_type"] == "all" and PLUGIN_CENTER[COMMAND]["register_trigger"] != "":
+            if PLUGIN_CENTER[COMMAND]["register_type"] == "qq" and PLUGIN_CENTER[COMMAND]["register_trigger"] != "":
                 if data["message_type"] == "group":
-                    if COMMAND["register_target"]["qq"]["group"] != "all" and data["group_id"] not in COMMAND["register_target"]["qq"]["group"]:
-                        continue
-                    PLUGIN_CENTER[COMMAND][callback]["qq"](qq_handle=api,tg_handle=bot,data=data)
+                    if PLUGIN_CENTER[COMMAND]["register_target"]["qq"]["group"] == "all" or data["group_id"] in PLUGIN_CENTER[COMMAND]["register_target"]["qq"]["group"]:
+                        PLUGIN_CENTER[COMMAND][callback]["qq"](qq_handle=api,tg_handle=bot,data=data)
                         
                 else:
                     # if data["qq_id"] in COMMAND["register_target"]["qq"]["member"]:
