@@ -14,6 +14,7 @@ Initialization = False
 class PluginException(Exception):
     def __init__(self,err='插件错误'):
         print("%s\n",err)
+        #log操作
         Exception.__init__(self,err)
 
 def Plugin_Load():
