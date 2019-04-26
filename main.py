@@ -47,13 +47,13 @@ def tg_event():
         data = update.message.to_dict()
         for i in PLUGIN_CENTER:
             if PLUGIN_CENTER[i]["register_trigger"] == "" and PLUGIN_CENTER[i]["register_type"] == "all" or PLUGIN_CENTER[i]["register_type"] == "tg":
-                PLUGIN_CENTER[i]["callback"]["qq"](qq_handle=api,tg_handle=bot,data=data)
+                PLUGIN_CENTER[i]["callback"]["qq"](qq_handle=api,tg_handle=bot,msg=data)
         COMMAND = data["text"].split(" ")[0] 
         if "text" in data and COMMAND in PLUGIN_CENTER:
             if PLUGIN_CENTER["register_type"] == "tg" and PLUGIN_CENTER[COMMAND]["register_trigger"] != "":
                 if data["chat"]["type"] == "group":
                     if ["chat"]["id"] in PLUGIN_CENTER[COMMAND]["register_target"]["tg"]["groups"] or PLUGIN_CENTER[COMMAND]["register_target"]["tg"]["groups"] == "all":
-                        PLUGIN_CENTER[COMMAND]["callback"]["qq"](qq_handle=api,tg_handle=bot,data=data)
+                        PLUGIN_CENTER[COMMAND]["callback"]["qq"](qq_handle=api,tg_handle=bot,msg=data)
                 else:
                     #处理成员消息
                     pass
@@ -67,14 +67,14 @@ def qq_event():
         # 遍历插件加载消息
         for i in PLUGIN_CENTER:
             if PLUGIN_CENTER[i]["register_trigger"] == "" and PLUGIN_CENTER[i]["register_type"] == "all" or PLUGIN_CENTER[i]["register_type"] == "qq":
-                PLUGIN_CENTER[i]["callback"]["qq"](qq_handle=api,tg_handle=bot,data=data)
+                PLUGIN_CENTER[i]["callback"]["qq"](qq_handle=api,tg_handle=bot,msg=data)
 
         COMMAND = data["message"].split(" ")[0]
         if COMMAND in PLUGIN_CENTER:
             if PLUGIN_CENTER[COMMAND]["register_type"] == "qq" and PLUGIN_CENTER[COMMAND]["register_trigger"] != "":
                 if data["message_type"] == "group":
                     if PLUGIN_CENTER[COMMAND]["register_target"]["qq"]["group"] == "all" or data["group_id"] in PLUGIN_CENTER[COMMAND]["register_target"]["qq"]["group"]:
-                        PLUGIN_CENTER[COMMAND]["callback"]["qq"](qq_handle=api,tg_handle=bot,data=data)
+                        PLUGIN_CENTER[COMMAND]["callback"]["qq"](qq_handle=api,tg_handle=bot,msg=data)
                         
                 else:
                     # if data["qq_id"] in COMMAND["register_target"]["qq"]["member"]:
