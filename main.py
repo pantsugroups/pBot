@@ -44,8 +44,8 @@ def tg_event():
     if Initialization:
         data = update.message.to_dict()
         for i in PLUGIN_CENTER:
-            if i["register_trigger"] == "" and i["register_type"] == "all" or i["register_type"] == "tg":
-                i[callback]["qq"](qq_handle=api,tg_handle=bot,data=data)
+            if PLUGIN_CENTER[i]["register_trigger"] == "" and PLUGIN_CENTER[i]["register_type"] == "all" or PLUGIN_CENTER[i]["register_type"] == "tg":
+                PLUGIN_CENTER[i][callback]["qq"](qq_handle=api,tg_handle=bot,data=data)
         COMMAND = data["text"].split(" ")[0] 
         if "text" in data and COMMAND in PLUGIN_CENTER:
             if PLUGIN_CENTER["register_type"] == "tg" and PLUGIN_CENTER[COMMAND]["register_trigger"] != "":
@@ -64,8 +64,8 @@ def qq_event():
         data = json.loads(request.data.decode("utf-8"))
         # 遍历插件加载消息
         for i in PLUGIN_CENTER:
-            if i["register_trigger"] == "" and i["register_type"] == "all" or i["register_type"] == "qq":
-                i[callback]["qq"](qq_handle=api,tg_handle=bot,data=data)
+            if PLUGIN_CENTER[i]["register_trigger"] == "" and PLUGIN_CENTER[i]["register_type"] == "all" or PLUGIN_CENTER[i]["register_type"] == "qq":
+                PLUGIN_CENTER[i][callback]["qq"](qq_handle=api,tg_handle=bot,data=data)
 
         COMMAND = data["message"].split(" ")[0]
         if COMMAND in PLUGIN_CENTER:
@@ -96,7 +96,7 @@ def control():
         else:
             return "error"
     elif request.args.get("status") == "uninstall":
-        if request.args.get("plguins") not "" and request.args.get("plguins") in PLUGIN_CENTER:
+        if request.args.get("plguins") != "" and request.args.get("plguins") in PLUGIN_CENTER:
             PLUGIN_CENTER.remove(request.args.get("plguins"))
             return "uninstall:ok"
         else:
