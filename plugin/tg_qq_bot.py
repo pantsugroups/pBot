@@ -4,7 +4,7 @@ import re
 # 呕
 
 def Printf(tg_handle="",qq_handle="",mag=""):# 这些参数是必不可少的。两个handle用于对相应的事件做出反馈。
-    print("plgun: %s this plugin is running....."% plugin_name)
+    print("plugin: %s this plugin is running....."% plugin_name)
 
 def peelphotourl(message_raw):  # return the message only and image_list
     image_list = []

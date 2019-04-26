@@ -43,6 +43,9 @@ def tg_event():
         return "Show me your TOKEN please!"
     if Initialization:
         data = update.message.to_dict()
+        for i in PLUGIN_CENTER:
+            if i["register_trigger"] == "" and i["register_type"] == "all" or i["register_type"] == "tg":
+                i[callback]["qq"](qq_handle=api,tg_handle=bot,data=data)
         COMMAND = data["text"].split(" ")[0] 
         if "text" in data and COMMAND in PLUGIN_CENTER:
             if PLUGIN_CENTER["register_type"] == "tg" and PLUGIN_CENTER[COMMAND]["register_trigger"] != "":
@@ -60,9 +63,9 @@ def qq_event():
     if Initialization:
         data = json.loads(request.data.decode("utf-8"))
         # 遍历插件加载消息
-        for i in PLUGIN_CENTER["register_trigger"]:
-            if PLUGIN_CENTER["register_trigger"] == "":
-                PLUGIN_CENTER[COMMAND][callback]["qq"](qq_handle=api,tg_handle=bot,data=data)
+        for i in PLUGIN_CENTER:
+            if i["register_trigger"] == "" and i["register_type"] == "all" or i["register_type"] == "qq":
+                i[callback]["qq"](qq_handle=api,tg_handle=bot,data=data)
 
         COMMAND = data["message"].split(" ")[0]
         if COMMAND in PLUGIN_CENTER:
@@ -82,10 +85,16 @@ def control():
     if request.args.get("status") == "start":
         bot.set_webhook(TG_WEBHOOK)
         Plugin_Load()
-        return "start"
+        if Initialization:
+            return "start"
+        else:
+            return "error"
     elif request.args.get("status") == "stop":
         # 停止bot
-        return "stop"
+        if not Initialization:
+            return "stop"
+        else:
+            return "error"
     elif request.args.get("status") == "uninstall":
         if request.args.get("plguins") not "" and request.args.get("plguins") in PLUGIN_CENTER:
             PLUGIN_CENTER.remove(request.args.get("plguins"))

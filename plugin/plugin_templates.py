@@ -2,7 +2,7 @@ plugin_name = "test_plguin"
 # coding:utf-8
 # 这个函数也是必不可少的
 def Printf(tg_handle="",qq_handle="",mag=""):# 这些参数是必不可少的。两个handle用于对相应的事件做出反馈。
-    print("plgun: %s this plugin is running....."% plugin_name)
+    print("plugin: %s this plugin is running....."% plugin_name)
 def Initialization():
     return "/test", { # 第一个参数为唯一标识符
     "name":plugin_name, # 插件名称
