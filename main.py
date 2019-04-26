@@ -3,7 +3,7 @@ from coolq import CoolQHttpAPI
 import telegram
 import sys
 import json,os,importlib
-from * import config
+from config import *
 from flask import Flask, request
 app = Flask(__name__)
 api = CoolQHttpAPI(COOLQ_PUAH_URL, access_token=ASSESS_TOKEN)
@@ -23,13 +23,16 @@ def Plugin_Load():
     files = os.listdir("plugin/")
     for i in files:
         if i[i.rfind("."):] == ".py":
-            register,plugins = importlib.import_module(i.replace(".py","")).Initialization()
+            obj = importlib.import_module(i.replace(".py",""))
+            register,plugins = obj.Initialization()
 
             if type(plugins) != dict:
                 raise PluginException("初始化插件失败")
             if "name" not in plugins or "register_trigger" not in plugins or "register_type" not in plugins or "callback" not in plugins:
                 raise PluginException("初始化插件失败")
+
             PLUGIN_CENTER[register] = plugins
+            obj.Printf()
     Initialization = True
             
 @app.route("/"+TG_TOKEN, methods=["POST"])
@@ -79,13 +82,13 @@ def control():
     if request.args.get("status") == "start":
         bot.set_webhook(TG_WEBHOOK)
         Plugin_Load()
-        return ""
+        return "start"
     elif request.args.get("status") == "stop":
         # 停止bot
-        return ""
+        return "stop"
 
     # 返回状态
-    return ""
+    return "Running......"
 
 if __name__ == "__main__":
 
