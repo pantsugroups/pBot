@@ -53,7 +53,7 @@ def tg_event():
             if PLUGIN_CENTER["register_type"] == "tg" and PLUGIN_CENTER[COMMAND]["register_trigger"] != "":
                 if data["chat"]["type"] == "group":
                     if ["chat"]["id"] in PLUGIN_CENTER[COMMAND]["register_target"]["tg"]["groups"] or PLUGIN_CENTER[COMMAND]["register_target"]["tg"]["groups"] == "all":
-                        PLUGIN_CENTER[COMMAND]["callback"]["qq"](qq_handle=api,tg_handle=bot,msg=data)
+                        PLUGIN_CENTER[COMMAND]["callback"]["tg"](qq_handle=api,tg_handle=bot,msg=data)
                 else:
                     #处理成员消息
                     pass

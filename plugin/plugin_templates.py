@@ -1,8 +1,10 @@
 plugin_name = "test_plguin"
 # coding:utf-8
 # 这个函数也是必不可少的
-def Printf(tg_handle="",qq_handle="",mag=""):# 这些参数是必不可少的。两个handle用于对相应的事件做出反馈。
+def Printf(tg_handle="",qq_handle="",msg=""):# 这些参数是必不可少的。两个handle用于对相应的事件做出反馈。
     print("plugin: %s this plugin is running....."% plugin_name)
+def Void(tg_handle="",qq_handle="",msg=""):
+    pass
 def Initialization():
     return "/test", { # 第一个参数为唯一标识符
     "name":plugin_name, # 插件名称
@@ -21,7 +23,7 @@ def Initialization():
     "level":0, # 优先级，暂定，也许有用也许没用
     "truncated":False, # 是否截断，截断则不让其他插件捕获，当然前提是 register_trigger 字段为空时这个条件才有用
     "callback":{ # 对于不同类型的触发函数，如果register_type为all时，则这两个字段必须要有内容
-        "tg":Printf,
-        "qq":Printf,
+        "tg":Void,
+        "qq":Void,
         }
     }

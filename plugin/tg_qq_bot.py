@@ -3,7 +3,7 @@ plugin_name = "transfer tg or qq"
 import re
 # 呕
 
-def Printf(tg_handle="",qq_handle="",mag=""):# 这些参数是必不可少的。两个handle用于对相应的事件做出反馈。
+def Printf(tg_handle="",qq_handle="",msg=""):# 这些参数是必不可少的。两个handle用于对相应的事件做出反馈。
     print("plugin: %s this plugin is running....."% plugin_name)
 
 def peelphotourl(message_raw):  # return the message only and image_list
@@ -15,32 +15,34 @@ def peelphotourl(message_raw):  # return the message only and image_list
         print(message_raw)
     return message_raw, image_list
 def qq_handle(tg_handle,qq_handle,msg=""):
-    
-    info = api.get_group_member_info(
+    if "user_id" in msg:
+        info = qq_handle.get_group_member_info(
                             558226805, msg["user_id"])
-    name = info["card"] or info["nickname"]
+        name = info["card"] or info["nickname"]
+    else:
+        name = "unknow"
     data = re.sub("\[.*?\]", "", msg["message"])
     # if "CQ:at" in msg:
     #     tg_handle.send_message(chat_id=-256726247, text="%s: %s" % (
     #                         name, data))
-    if "CQ:image" in data["message"]:
-        msg2, image_list = peelphotourl(data["messages"])
+    if "CQ:image" in data:
+        msg2, image_list = peelphotourl(data)
         for i in image_list:
             if msg2 != "":
                 tg_handle.send_photo(chat_id=-256726247, photo=i, caption="%s: %s" % (name, msg2))
             else:
                 tg_handle.send_photo(chat_id=-256726247, photo=i, caption="%s: Send a Photo." % (name))
-    elif "message" in data:
-        data = re.sub("\[.*?\]", "", msg)
-        bot.send_message(chat_id=-256726247, text="!%s: %s" % (
+    elif data != "":
+        #data = re.sub("\[.*?\]", "", msg)
+        tg_handle.send_message(chat_id=-256726247, text="!%s: %s" % (
                             name, data))
 
 def tg_handle(tg_handle,qq_handle,msg=""):
-    if "username" not in data["from"]:
-        name = "%s %s"(data["from"]["first_name"] , data["from"]["last_name"])
+    if "username" not in msg["from"]:
+        name = "%s %s"(msg["from"]["first_name"] , msg["from"]["last_name"])
     else:
-        name = data["from"]["username"]
-    api.send_group_msg(558226805, "%s: %s" % (name, data["text"]))
+        name = msg["from"]["username"]
+    qq_handle.send_group_msg(558226805, "%s: %s" % (name, msg["text"]))
 def Initialization():
     return "/tgqqhelp", { # 第一个参数为唯一标识符
     "name":plugin_name, # 插件名称
