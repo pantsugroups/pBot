@@ -29,10 +29,10 @@ def qq_handle(tg_handle,qq_handle,msg=""):
             if msg2 != "":
                 tg_handle.send_photo(chat_id=-256726247, photo=i, caption="%s: %s" % (name, msg2))
             else:
-                tg_handle..send_photo(chat_id=-256726247, photo=i, caption="%s: Send a Photo." % (name))
+                tg_handle.send_photo(chat_id=-256726247, photo=i, caption="%s: Send a Photo." % (name))
     elif "message" in data:
         data = re.sub("\[.*?\]", "", msg)
-                        bot.send_message(chat_id=-256726247, text="!%s: %s" % (
+        bot.send_message(chat_id=-256726247, text="!%s: %s" % (
                             name, data))
 
 def tg_handle(tg_handle,qq_handle,msg=""):
