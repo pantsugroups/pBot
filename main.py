@@ -86,6 +86,12 @@ def control():
     elif request.args.get("status") == "stop":
         # 停止bot
         return "stop"
+    elif request.args.get("status") == "uninstall":
+        if request.args.get("plguins") not "" and request.args.get("plguins") in PLUGIN_CENTER:
+            PLUGIN_CENTER.remove(request.args.get("plguins"))
+            return "uninstall:ok"
+        else:
+            return "uninstall:plugin not found."
 
     # 返回状态
     return "Running......"

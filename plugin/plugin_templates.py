@@ -21,7 +21,7 @@ def Initialization():
     "level":0, # 优先级，暂定，也许有用也许没用
     "truncated":False, # 是否截断，截断则不让其他插件捕获，当然前提是 register_trigger 字段为空时这个条件才有用
     "callback":{ # 对于不同类型的触发函数，如果register_type为all时，则这两个字段必须要有内容
-        "tg":printf,
-        "qq":printf,
+        "tg":Printf,
+        "qq":Printf,
         }
     }
