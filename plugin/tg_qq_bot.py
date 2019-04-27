@@ -34,20 +34,20 @@ def qq_handle(tg, qq, msg=None):
         name = re.sub(symbol, "", name)
     else:
         name = "unknown"
-    if "message" not in data:return
-    data = re.sub(r"[.*?]", "", msg["message"])
+
+    
     # if "CQ:at" in msg:
     #     tg.send_message(chat_id=-256726247, text="%s: %s" % (
     #                         name, data))
-    if "CQ:image" in data:
-        msg2, image_list = peelphotourl(data)
+    if "CQ:image" in msg["message"]:
+        msg2, image_list = peelphotourl(msg["message"])
         for i in image_list:
             if msg2 != "":
                 tg.send_photo(chat_id=-256726247, photo=i, caption=f"{name}: {msg2}")
             else:
                 tg.send_photo(chat_id=-256726247, photo=i, caption=f"{name}: Send a Photo.")
-    elif data != "":
-        # data = re.sub("\[.*?\]", "", msg)
+    else :
+        data = re.sub(r"[.*?]", "", msg["message"])
         tg.send_message(chat_id=-256726247, text=f"{name}: {data}")
 
 
