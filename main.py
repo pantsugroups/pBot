@@ -17,7 +17,7 @@ app = Flask(__name__)
 api = CoolQHttpAPI(COOLQ_PUAH_URL, access_token=ASSESS_TOKEN)
 bot = telegram.Bot(token=TG_TOKEN)
 plugin_center = {}
-
+initialization = False
 
 class PluginException(Exception):
     def __init__(self, err='插件错误'):
@@ -98,7 +98,7 @@ def qq_event():
 
 @app.route("/control")
 def control():
-    # initialization = False
+    global initialization
     if request.args.get("status") == "start":
         bot.set_webhook(TG_WEBHOOK)
         plugin_load()
@@ -107,7 +107,7 @@ def control():
         else:
             return "error"
     elif request.args.get("status") == "stop":
-        #global initialization
+        
         initialization = False
         # 停止bot
         if not initialization:

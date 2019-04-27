@@ -21,7 +21,7 @@ def peelphotourl(message_raw):  # return the message only and image_list
     while message_raw.find("url=") != -1:
         # image_list.append(message_raw[message_raw.find("url=")+4:message_raw.find("]")])
         image_list.append(tool_function_txt("url=", "]", message_raw))
-        message_raw = re.sub(r"[CQ:image.*?]", "", message_raw)
+        message_raw = re.sub("\[CQ:image.*?\]", "", message_raw)
         print(message_raw)
     return message_raw, image_list
 
