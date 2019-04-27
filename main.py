@@ -107,7 +107,7 @@ def control():
         else:
             return "error"
     elif request.args.get("status") == "stop":
-        global initialization
+        #global initialization
         initialization = False
         # 停止bot
         if not initialization:

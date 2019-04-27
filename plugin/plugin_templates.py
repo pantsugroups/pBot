@@ -4,11 +4,11 @@ plugin_name = "test_plugin"
 
 
 # 这个函数也是必不可少的
-def printf(tg_handle="", qq_handle="", msg=""):  # 这些参数是必不可少的。两个handle用于对相应的事件做出反馈。
+def printf(tg="", qq="", msg=""):  # 这些参数是必不可少的。两个handle用于对相应的事件做出反馈。
     print(f"plugin: {plugin_name} this plugin is running.....")
 
 
-def void(tg_handle="", qq_handle="", msg=""):
+def void(tg="", qq="", msg=""):
     pass
 
 

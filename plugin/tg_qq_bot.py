@@ -12,7 +12,7 @@ def tool_function_txt(start_str, end, html):
         if end >= 0:
             return html[start:end].strip()
 
-def printf():
+def printf(tg,qq,msg=None):
     print(f"plugin: {plugin_name} is running.....")
 
 
