@@ -37,11 +37,11 @@ def plugin_load():
         if type(plugins) != dict:
             raise PluginException("初始化插件失败")
         required = ["name", "register_trigger", "register_type", "callback"]
-        if set(required) < set(plugins.keys()):
+        if not set(required) < set(plugins.keys()):
             raise PluginException("初始化插件失败")
 
         plugin_center[register] = plugins
-        obj.printf()
+        obj.printf(qq=api,tg=bot)
 
     initialization = True
 
@@ -56,7 +56,7 @@ def tg_event():
         for i in plugin_center:
             if plugin_center[i]["register_trigger"] == "" and plugin_center[i]["register_type"] == "all" or \
                     plugin_center[i]["register_type"] == "tg":
-                plugin_center[i]["callback"]["qq"](qq=api, tg=bot, msg=data)
+                plugin_center[i]["callback"]["tg"](qq=api, tg=bot, msg=data)
         command = data["text"].split(" ")[0]
         if "text" in data and command in plugin_center:
             if plugin_center["register_type"] == "tg" and plugin_center[command]["register_trigger"] != "":

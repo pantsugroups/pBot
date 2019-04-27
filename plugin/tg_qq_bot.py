@@ -34,6 +34,7 @@ def qq_handle(tg, qq, msg=None):
         name = re.sub(symbol, "", name)
     else:
         name = "unknown"
+    if "message" not in data:return
     data = re.sub(r"[.*?]", "", msg["message"])
     # if "CQ:at" in msg:
     #     tg.send_message(chat_id=-256726247, text="%s: %s" % (
