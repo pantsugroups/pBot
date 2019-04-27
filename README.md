@@ -3,4 +3,4 @@
 
 # 如何使用插件
 
-请把插件文件添加到 `./plugin` 目录下，详细字段请阅读plugin_templates.py
+请把插件文件添加到 `./plugin` 目录下，详细字段请阅读 plugin_templates.py
