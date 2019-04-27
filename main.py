@@ -56,14 +56,14 @@ def tg_event():
         for i in plugin_center:
             if plugin_center[i]["register_trigger"] == "" and plugin_center[i]["register_type"] == "all" or \
                     plugin_center[i]["register_type"] == "tg":
-                plugin_center[i]["callback"]["qq"](qq_handle=api, tg_handle=bot, msg=data)
+                plugin_center[i]["callback"]["qq"](qq=api, tg=bot, msg=data)
         command = data["text"].split(" ")[0]
         if "text" in data and command in plugin_center:
             if plugin_center["register_type"] == "tg" and plugin_center[command]["register_trigger"] != "":
                 if data["chat"]["type"] == "group":
                     if data["chat"]["id"] in plugin_center[command]["register_target"]["tg"]["groups"] or \
                             plugin_center[command]["register_target"]["tg"]["groups"] == "all":
-                        plugin_center[command]["callback"]["tg"](qq_handle=api, tg_handle=bot, msg=data)
+                        plugin_center[command]["callback"]["tg"](qq=api, tg=bot, msg=data)
                 else:
                     # 处理成员消息
                     pass
@@ -79,7 +79,7 @@ def qq_event():
         for i in plugin_center:
             if plugin_center[i]["register_trigger"] == "" and plugin_center[i]["register_type"] == "all" or \
                     plugin_center[i]["register_type"] == "qq":
-                plugin_center[i]["callback"]["qq"](qq_handle=api, tg_handle=bot, msg=data)
+                plugin_center[i]["callback"]["qq"](qq=api, tg=bot, msg=data)
 
         command = data["message"].split(" ")[0]
         if command in plugin_center:
@@ -87,7 +87,7 @@ def qq_event():
                 if data["message_type"] == "group":
                     if plugin_center[command]["register_target"]["qq"]["group"] == "all" or data["group_id"] in \
                             plugin_center[command]["register_target"]["qq"]["group"]:
-                        plugin_center[command]["callback"]["qq"](qq_handle=api, tg_handle=bot, msg=data)
+                        plugin_center[command]["callback"]["qq"](qq=api, tg=bot, msg=data)
 
                 else:
                     # if data["qq_id"] in COMMAND["register_target"]["qq"]["member"]:
@@ -107,6 +107,8 @@ def control():
         else:
             return "error"
     elif request.args.get("status") == "stop":
+        global initialization
+        initialization = False
         # 停止bot
         if not initialization:
             return "stop"
