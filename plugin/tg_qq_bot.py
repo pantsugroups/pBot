@@ -47,7 +47,7 @@ def qq_handle(tg, qq, msg=None):
             else:
                 tg.send_photo(chat_id=-256726247, photo=i, caption=f"{name}: Send a Photo.")
     else :
-        data = re.sub(r"[.*?]", "", msg["message"])
+        data = re.sub(r"\[.*?\]", "", msg["message"])
         tg.send_message(chat_id=-256726247, text=f"{name}: {data}")
 
 
